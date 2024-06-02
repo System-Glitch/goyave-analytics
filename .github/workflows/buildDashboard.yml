@@ -8,6 +8,12 @@ on:
   pull_request:
     branches:
       - "**"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,10 +25,14 @@ jobs:
         with:
           node-version: 22
           cache: npm
+          cache-dependency-path: 'dashboard/package-lock.json'
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Install dependencies
         working-directory: ./dashboard
+        env:
+          VITE_CLIENT_URL: ${{ secrets.SUPABASE_CLIENT_URL }}
+          VITE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: npm ci
       - name: Build with vite
         working-directory: ./dashboard
