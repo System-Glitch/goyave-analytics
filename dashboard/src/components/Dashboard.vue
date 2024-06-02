@@ -19,6 +19,9 @@ onMounted(refresh)
 
 <template>
   <div>
+    <button type="button" @click.prevent="refresh">Refresh</button>
+  </div>
+  <div>
     <table>
       <thead>
         <th>Page</th>

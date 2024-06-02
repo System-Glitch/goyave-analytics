@@ -8,7 +8,7 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js'
 import { corsHeaders } from '../_shared/cors.ts'
 
-const REFERRER = 'https://goyave.dev'
+const REFERRER = Deno.env.get('ORIGIN_URL')!
 
 Deno.serve(async (req) => {
   try {
@@ -21,17 +21,18 @@ Deno.serve(async (req) => {
     if (!referrer || !referrer.startsWith(REFERRER)) {
       return new Response(null, {status: 204, headers: { ...corsHeaders }})
     }
+    const body = await req.json()
+    const page = body.page?.trim() || ''
+    if (!page) {
+      return new Response(null, {status: 204, headers: { ...corsHeaders }})
+    }
 
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
     )
 
-    let uri = referrer.slice(REFERRER.length).trim()
-    if (uri === '') {
-      uri = '/'
-    }
-    const { error } = await supabase.from('pageviews').insert({uri})
+    const { error } = await supabase.from('pageviews').insert({uri: page})
 
     if (error) {
       throw error
