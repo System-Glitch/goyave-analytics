@@ -30,12 +30,12 @@ jobs:
         uses: actions/configure-pages@v5
       - name: Install dependencies
         working-directory: ./dashboard
-        env:
-          VITE_CLIENT_URL: ${{ secrets.SUPABASE_CLIENT_URL }}
-          VITE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: npm ci
       - name: Build with vite
         working-directory: ./dashboard
+        env:
+          VITE_CLIENT_URL: ${{ secrets.SUPABASE_CLIENT_URL }}
+          VITE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: npm run build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
