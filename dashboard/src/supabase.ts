@@ -26,7 +26,7 @@ export async function login(email: string, password: string): Promise<void> {
 }
 
 export async function getOverall(): Promise<ByTime[]> {
-  const { data, error } = await supabase.from('overall').select()
+  const { data, error } = await supabase.from('overall').select().order('viewed_at', {ascending: true})
   if (error) {
     throw error
   }
@@ -34,7 +34,7 @@ export async function getOverall(): Promise<ByTime[]> {
 }
 
 export async function getPerPage(): Promise<ByURI[]> {
-  const { data, error } = await supabase.from('per_page').select()
+  const { data, error } = await supabase.from('per_page').select().order('uri', {ascending: true})
   if (error) {
     throw error
   }
