@@ -1,4 +1,4 @@
-CREATE VIEW overall AS (
+CREATE OR REPLACE VIEW overall WITH (security_invoker = on) AS (
     WITH last_month AS (
         SELECT DATE_TRUNC('day', viewed_at) AS viewed_at FROM pageviews WHERE viewed_at >= 'now'::timestamp - '1 MONTH'::interval
     )
