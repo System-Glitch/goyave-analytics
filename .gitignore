@@ -1,0 +1,4 @@
+.vscode
+.env
+supabase/.temp
+supabase/.branches
