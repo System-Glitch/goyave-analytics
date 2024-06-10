@@ -78,8 +78,7 @@ onMounted(refresh)
     display: grid;
     max-height: 500px;
     grid-template-columns: auto minmax(0, min-content);
-    grid-template-rows: min-content;
-    grid-auto-rows: auto;
+    grid-auto-rows: min-content;
     margin: 25px 0;
     font-size: 0.9em;
     font-family: sans-serif;
@@ -94,6 +93,7 @@ onMounted(refresh)
     position: sticky;
     background-color: #00a3cc;
     color: #ffffff;
+    font-weight: bold;
     text-align: left;
     top: 0;
     left: 0;
@@ -104,6 +104,7 @@ onMounted(refresh)
     bottom: 0;
     left: 0;
     background-color: white;
+    font-weight: bold;
   }
 
   .table-head, .table-cell, .table-footer {
