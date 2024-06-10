@@ -3,7 +3,7 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js'
 import { corsHeaders } from '../_shared/cors.ts'
 
-const REFERRER = Deno.env.get('ORIGIN_URL')!
+const ORIGIN = Deno.env.get('ORIGIN_URL')!
 
 Deno.serve(async (req) => {
   try {
@@ -12,8 +12,9 @@ Deno.serve(async (req) => {
       return new Response('ok', { headers: corsHeaders })
     }
 
-    const referrer = req.headers.get('referer')
-    if (!referrer || !referrer.startsWith(REFERRER)) {
+    const origin = req.headers.get('origin')
+    const referer = req.headers.get('referer')
+    if (!origin || origin !== ORIGIN || !referer || !referer.startsWith(ORIGIN)) {
       return new Response(null, {status: 204, headers: { ...corsHeaders }})
     }
     const body = await req.json()
