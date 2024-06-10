@@ -53,25 +53,15 @@ onMounted(refresh)
     <button class="button" type="button" @click.prevent="refresh">Refresh</button>
   </header>
   <div class="main-container">
-    <div>
-      <table>
-        <thead>
-          <tr>
-            <th>Page</th>
-            <th>Count</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="page in perPage">
-            <td>{{ page.uri }}</td>
-            <td>{{ page.count }}</td>
-          </tr>
-          <tr>
-            <td>Total</td>
-            <td>{{ perPage.reduce((acc, v) => acc + v.count, 0) }}</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="table">
+      <span class="table-head">Page</span>
+      <span class="table-head">Count</span>
+      <template v-for="page in perPage">
+        <span class="table-cell">{{ page.uri }}</span>
+        <span class="table-cell">{{ page.count }}</span>
+      </template>
+      <span class="table-footer">Total</span>
+      <span class="table-footer">{{ perPage.reduce((acc, v) => acc + v.count, 0) }}</span>
     </div>
     <div class="chart-container">
       <Bar
@@ -79,48 +69,67 @@ onMounted(refresh)
         :options="chartOptions"
         :data="chartData"
       />
-  </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
-  table {
-    border-collapse: collapse;
+  .table {
+    display: grid;
+    max-height: 500px;
+    grid-template-columns: auto minmax(0, min-content);
+    grid-template-rows: min-content;
+    grid-auto-rows: auto;
     margin: 25px 0;
     font-size: 0.9em;
     font-family: sans-serif;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
     border-radius: 0.5rem 0.5rem 0 0;
-    overflow: hidden;
-    width: 100%;
+    border-bottom: 2px solid #00a3cc;
+    overflow: auto;
+    background-color: white;
   }
 
-  table thead tr {
+  .table-head {
+    position: sticky;
     background-color: #00a3cc;
     color: #ffffff;
     text-align: left;
+    top: 0;
+    left: 0;
   }
 
-  th, td {
+  .table-footer {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    background-color: white;
+  }
+
+  .table-head, .table-cell, .table-footer {
     text-align: left; 
     padding: 12px 15px;
   }
 
-  table tbody tr {
+  .table-cell:not(:last-child):not(:nth-last-child(2)) {
     border-bottom: 1px solid #dddddd;
   }
 
-  table tbody tr:nth-of-type(even) {
-      background-color: #f3f3f3;
+  .table-footer {
+    border-top-width: 1px solid #dddddd;
   }
 
-  table tbody tr:last-of-type {
-      border-bottom: 2px solid #00a3cc;
+  .table-head:nth-child(even), .table-cell:nth-child(even), .table-footer:nth-child(even) {
+    text-align: right;
+  }
+
+  .table-cell:nth-child(4n+1), .table-cell:nth-child(4n+2) {
+      background-color: #f3f3f3;
   }
 
   .chart-container {
     min-height: 500px;
-    grid-column: span 2 / span 2;
+    grid-column: span 2;
   }
 
   .main-container {
@@ -133,7 +142,12 @@ onMounted(refresh)
 
   @media (max-width: 1023px) {
     .main-container {
-      grid-template-columns: repeat(1, minmax(0, 1fr));
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: 1fr min-content;
+    }
+
+    .chart-container {
+      grid-column: span 1;
     }
   }
 </style>
