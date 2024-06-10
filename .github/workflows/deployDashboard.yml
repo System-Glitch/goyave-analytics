@@ -1,4 +1,4 @@
-name: Build dashboard
+name: Deploy dashboard
 on:
   push:
     branches:
